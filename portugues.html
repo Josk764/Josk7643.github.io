@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTUGUÉS</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #303033;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            width: 300px;
+        }
+        textarea {
+            margin-top: 20px;
+            width: 80%;
+            height: 150px;
+            font-size: 16px;
+            resize: none;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .game-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            width: 80%;
+            justify-content: center;
+        }
+        .card {
+            margin: 10px;
+            width: 100px;
+            height: 100px;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>olá</h1>
+    <img src="gatoc.gif" alt="Gato lindo saludando">
+    <button id="start">🎙️ Comenzar a hablar</button>
+    <textarea id="output" placeholder="Tu texto aparecerá aquí..." readonly></textarea>
+
+    <div class="game-container" id="game"></div>
+
+    <script>
+        const words = ['gato', 'casa', 'amor', 'paz', 'alegria', 'sol', 'lua', 'estrela']; // Words in Portuguese
+        let shuffled = [];
+        let selected = [];
+
+        function startGame() {
+            shuffled = [...words, ...words].sort(() => 0.5 - Math.random());
+            const gameContainer = document.getElementById('game');
+            gameContainer.innerHTML = '';
+            shuffled.forEach((word, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.setAttribute('data-word', word);
+                card.setAttribute('data-index', index);
+                card.textContent = '?';
+                gameContainer.appendChild(card);
+                card.addEventListener('click', () => revealCard(card));
+            });
+        }
+
+        function revealCard(card) {
+            const word = card.getAttribute('data-word');
+            const index = card.getAttribute('data-index');
+
+            if (selected.length === 0 || selected.length === 1) {
+                card.textContent = word;
+                selected.push({ card, word, index });
+            }
+
+            if (selected.length === 2) {
+                if (selected[0].word === selected[1].word && selected[0].index !== selected[1].index) {
+                    setTimeout(() => {
+                        selected[0].card.style.backgroundColor = 'green';
+                        selected[1].card.style.backgroundColor = 'green';
+                        selected = [];
+                    }, 500);
+                } else {
+                    setTimeout(() => {
+                        selected[0].card.textContent = '?';
+                        selected[1].card.textContent = '?';
+                        selected = [];
+                    }, 500);
+                }
+            }
+        }
+
+        window.onload = startGame;
+    </script>
+</body>
+</html>

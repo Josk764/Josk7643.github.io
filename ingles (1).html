@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTUGUÉS</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente */
+            height: 100vh; /* Ocupa toda la altura de la ventana */
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            width: 300px; /* Ajusta el tamaño de la imagen */
+        }
+        textarea {
+            margin-top: 20px;
+            width: 80%;
+            height: 150px;
+            font-size: 16px;
+            resize: none;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .question {
+            margin: 20px;
+        }
+        .options button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>hello, welcome!!</h1>
+    <img src="gato5.jpg" alt="Gato lindo saludando">
+    <p><h2>practica para aprender</h2>
+    <img src="gato4.jpg" alt="Imagen de ejemplo" width="100">
+    <button id="start">🎙️ Comenzar a hablar</button>
+    <textarea id="output" placeholder="Tu texto aparecerá aquí..." readonly></textarea>
+
+    <h2>Juego 1: Emparejar palabras</h2>
+    <div id="game1">
+        <p class="question">¿Cuál es el significado de la palabra "Apple"?</p>
+        <div class="options">
+            <button onclick="checkAnswer1(true)">Manzana</button>
+            <button onclick="checkAnswer1(false)">Perro</button>
+            <button onclick="checkAnswer1(false)">Libro</button>
+        </div>
+    </div>
+    <p id="result1"></p>
+
+    <h2>Juego 2: Completa la frase</h2>
+    <div id="game2">
+        <p class="question">I ___ to school every day.</p>
+        <div class="options">
+            <button onclick="checkAnswer2(false)">run</button>
+            <button onclick="checkAnswer2(true)">go</button>
+            <button onclick="checkAnswer2(false)">eat</button>
+        </div>
+    </div>
+    <p id="result2"></p>
+
+    <script>
+        // Verificar si el navegador soporta la API de reconocimiento de voz
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'pt-BR'; // Configurado para portugués brasileño
+            recognition.interimResults = false;
+            recognition.continuous = false;
+
+            const startButton = document.getElementById('start');
+            const output = document.getElementById('output');
+
+            // Iniciar el reconocimiento de voz al hacer clic
+            startButton.addEventListener('click', () => {
+                recognition.start();
+            });
+
+            // Manejar los resultados del reconocimiento
+            recognition.addEventListener('result', (event) => {
+                const transcript = event.results[0][0].transcript; // Texto reconocido
+                output.value += transcript + '\n'; // Mostrar el texto en el área de texto
+            });
+
+            // Mensaje cuando finaliza el reconocimiento
+            recognition.addEventListener('end', () => {
+                console.log('Reconocimiento de voz finalizado.');
+            });
+        } else {
+            alert('Lo siento, tu navegador no soporta la Web Speech API.');
+        }
+
+        // Función para el primer juego: Emparejar palabras
+        function checkAnswer1(isCorrect) {
+            const result1 = document.getElementById('result1');
+            if (isCorrect) {
+                result1.textContent = '¡Correcto! "Apple" significa "Manzana".';
+            } else {
+                result1.textContent = 'Incorrecto. Intenta de nuevo.';
+            }
+        }
+
+        // Función para el segundo juego: Completa la frase
+        function checkAnswer2(isCorrect) {
+            const result2 = document.getElementById('result2');
+            if (isCorrect) {
+                result2.textContent = '¡Correcto! "go" completa la frase: "I go to school every day."';
+            } else {
+                result2.textContent = 'Incorrecto. Intenta de nuevo.';
+            }
+        }
+    </script>
+</body>
+</html>

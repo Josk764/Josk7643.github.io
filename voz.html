@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTUGUÉS</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente */
+            height: 100vh; /* Ocupa toda la altura de la ventana */
+            margin: 0;
+            background-color: #303033 ;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            width: 300px; /* Ajusta el tamaño de la imagen */
+        }
+        textarea {
+            margin-top: 20px;
+            width: 80%;
+            height: 150px;
+            font-size: 16px;
+            resize: none;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>hola!!</h1>
+	<style>
+	font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: #f0f8ff; /* Color azul claro */
+	</style>
+    <img src="gatoc.gif" alt="Gato lindo saludando">
+    <button id="start">🎙️ Comenzar a hablar</button>
+    <textarea id="output" placeholder="Tu texto aparecerá aquí..." readonly></textarea>
+
+    <script>
+        // Verificar si el navegador soporta la API de reconocimiento de voz
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'pt-BR'; // Configurado para portugués brasileño
+            recognition.interimResults = false;
+            recognition.continuous = false;
+
+            const startButton = document.getElementById('start');
+            const output = document.getElementById('output');
+
+            // Iniciar el reconocimiento de voz al hacer clic
+            startButton.addEventListener('click', () => {
+                recognition.start();
+            });
+
+            // Manejar los resultados del reconocimiento
+            recognition.addEventListener('result', (event) => {
+                const transcript = event.results[0][0].transcript; // Texto reconocido
+                output.value += transcript + '\n'; // Mostrar el texto en el área de texto
+            });
+
+            // Mensaje cuando finaliza el reconocimiento
+            recognition.addEventListener('end', () => {
+                console.log('Reconocimiento de voz finalizado.');
+            });
+        } else {
+            alert('Lo siento, tu navegador no soporta la Web Speech API.');
+        }
+    </script>
+	<h3>
+</body>
+</html>
